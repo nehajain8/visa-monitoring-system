@@ -14,8 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build:
-      context: ./backend
+    build: ./backend
     depends_on:
       - postgres
     environment:
@@ -26,12 +25,11 @@ services:
       - "8080:8080"
 
   frontend:
-    build:
-      context: ./frontend
-    depends_on:
-      - backend
+    build: ./frontend
     ports:
       - "3000:3000"
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
