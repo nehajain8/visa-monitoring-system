@@ -1,6 +1,21 @@
 version: '3.8'
-
 services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/visa_db
+      SPRING_DATASOURCE_USERNAME: visa_admin
+      SPRING_DATASOURCE_PASSWORD: visa_secret
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+
   postgres:
     image: postgres:15
     restart: unless-stopped
@@ -12,24 +27,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  backend:
-    build: ./backend
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/visa_db
-      SPRING_DATASOURCE_USERNAME: visa_admin
-      SPRING_DATASOURCE_PASSWORD: visa_secret
-    ports:
-      - "8080:8080"
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
 
 volumes:
   postgres_data:
